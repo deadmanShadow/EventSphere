@@ -1,4 +1,4 @@
-# 🚀 EventSphere - Event Management Platform
+# 🚀 EventSphere - Making Events Simpler
 
 
 **EventSphere** is a full-stack, production-ready event management application. It allows users to browse events, purchase tickets securely via Stripe, and manage their profiles. Organizers can host events, manage attendees, and track sales, while Admins have full control over the platform.
