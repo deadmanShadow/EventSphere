@@ -1,0 +1,41 @@
+import LoginSuccessToast from "@/components/shared/LoginSuccessToast";
+import LogoutSuccessToast from "@/components/shared/LogoutSuccessToast";
+import type { Metadata } from "next";
+import { Roboto, Roboto_Slab } from "next/font/google";
+import { Suspense } from "react";
+import { Toaster } from "sonner";
+import "./globals.css";
+
+const primary = Roboto_Slab({
+  variable: "--font-primary",
+  subsets: ["latin"],
+});
+
+const secondary = Roboto({
+  variable: "--font-secondary",
+  subsets: ["latin"],
+});
+
+export const metadata: Metadata = {
+  title: "EventSphere",
+  description: "Simple and smart event management for everyone",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en">
+      <body className={`${secondary.variable} ${primary.variable} antialiased`} suppressHydrationWarning>
+        {children}
+        <Toaster position="top-right" richColors />
+         <Suspense fallback={null}>
+        <LoginSuccessToast />
+        <LogoutSuccessToast />
+        </Suspense>
+      </body>
+    </html>
+  );
+}
