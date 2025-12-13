@@ -1,0 +1,31 @@
+enum UserRole {
+  ADMIN
+  HOST
+  USER
+}
+
+enum EventStatus {
+  OPEN
+  FULL
+  CANCELLED
+  COMPLETED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum FriendStatus {
+  PENDING
+  ACCEPTED
+  BLOCKED
+}
+
+enum HostApplicationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
