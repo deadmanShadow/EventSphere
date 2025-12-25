@@ -1,38 +1,40 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { UserInfo } from "@/types/user.interface";
-import { getAllUsers, updateUsers } from "@/services/admin/userManagement";
-import {
-  getAllHostApplications,
-  approveHostApplication,
-  rejectHostApplication,
-} from "@/services/admin/hostApplications";
-import { HostApplication } from "@/types/hostApplication.interface";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { UserRole } from "@/lib/auth-utils";
-import { Badge } from "@/components/ui/badge";
+import { TableSkeleton } from "@/components/shared/TableSkeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
 } from "@/components/ui/table";
-import { CheckCircle, XCircle, Clock, User } from "lucide-react";
-import { useState, useEffect } from "react";
+import { UserRole } from "@/lib/auth-utils";
+import {
+    approveHostApplication,
+    getAllHostApplications,
+    rejectHostApplication,
+} from "@/services/admin/hostApplications";
+import { getAllUsers, updateUsers } from "@/services/admin/userManagement";
+import { HostApplication } from "@/types/hostApplication.interface";
+import { UserInfo } from "@/types/user.interface";
+import { CheckCircle, Clock, User, XCircle } from "lucide-react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 const UserManagement = () => {
   const [users, setUsers] = useState<UserInfo[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [hostApplications, setHostApplications] = useState<HostApplication[]>(
     []
   );
@@ -40,6 +42,7 @@ const UserManagement = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setIsLoading(true);
         const [usersResult, hostAppsResult] = await Promise.all([
           getAllUsers(),
           getAllHostApplications(),
@@ -55,6 +58,8 @@ const UserManagement = () => {
       } catch (error) {
         console.error("Error fetching data:", error);
         toast.error("Failed to load data");
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -118,6 +123,10 @@ const UserManagement = () => {
   const getUserApplication = (userId: string) => {
     return hostApplications.find((app) => app.userId === userId);
   };
+
+  if (isLoading) {
+    return <TableSkeleton columns={5} rows={5} />;
+  }
 
   return (
     <div className="space-y-4 border rounded-md max-w-4xl">

@@ -1,10 +1,10 @@
+import HostApplicationStatus from "@/components/modules/ApplyForHost/HostApplicationStatus";
+import DashboardPieChart from "@/components/modules/Dashboard/Charts/DashboardPieChart";
+import { UserPastEventsTable, UserUpcomingEventsTable } from "@/components/modules/Dashboard/TableWrappers/UserTables";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getMyEvents, getSavedEvents } from "@/services/user/userEventManagement";
 import { IEvent } from "@/types/event.interface";
 import { CalendarIcon, CheckCircle, ClockIcon, UsersIcon } from "lucide-react";
-import Link from "next/link";
-import { ReviewDialog } from "@/components/modules/review/ReviewDialog";
-import HostApplicationStatus from "@/components/modules/ApplyForHost/HostApplicationStatus";
 
 const UserDashboardPage = async () => {
   const result = await getMyEvents();
@@ -16,6 +16,12 @@ const UserDashboardPage = async () => {
     (e) => new Date(e.dateTime) > new Date()
   );
   const pastEvents = events.filter((e) => new Date(e.dateTime) <= new Date());
+
+
+  const chartData = [
+    { name: "Joined", value: events.length },
+    { name: "Saved", value: savedEvents.length }
+  ];
 
   return (
     <div className="space-y-6">
@@ -74,72 +80,24 @@ const UserDashboardPage = async () => {
         </Card>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>Upcoming Events</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {upcomingEvents.length === 0 ? (
-              <p className="text-muted-foreground">
-                No upcoming events.{" "}
-                <Link href="/events" className="text-[#a11f65] hover:underline">
-                  Explore events
-                </Link>
-              </p>
-            ) : (
-              <div className="space-y-4">
-                {upcomingEvents.slice(0, 5).map((event) => (
-                  <div
-                    key={event.id}
-                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
-                  >
-                    <div>
-                      <p className="font-semibold">{event.name}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {new Date(event.dateTime).toLocaleString()}
-                      </p>
-                    </div>
-                    <Link
-                      href={`/events/${event.id}`}
-                      className="text-sm text-[#a11f65] hover:underline"
-                    >
-                      View Details
-                    </Link>
-                  </div>
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Past Events</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {pastEvents.length === 0 ? (
-              <p className="text-muted-foreground">No past events found.</p>
-            ) : (
-              <div className="space-y-4">
-                {pastEvents.slice(0, 5).map((event) => (
-                  <div
-                    key={event.id}
-                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
-                  >
-                    <div>
-                      <p className="font-semibold">{event.name}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {new Date(event.dateTime).toLocaleDateString()}
-                      </p>
-                    </div>
-                    <ReviewDialog eventId={event.id} hostId={event.createdBy} />
-                  </div>
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 space-y-6">
+             <UserUpcomingEventsTable
+                data={upcomingEvents.slice(0, 5)}
+            />
+            <UserPastEventsTable
+                data={pastEvents.slice(0, 5)}
+            />
+        </div>
+        <div>
+            <DashboardPieChart 
+                data={chartData} 
+                nameKey="name" 
+                dataKey="value"
+                title="Activity Overview"
+                colors={["#a11f65", "#10b981"]}
+            />
+        </div>
       </div>
     </div>
   );

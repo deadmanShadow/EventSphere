@@ -1,4 +1,7 @@
+"use client";
 import Logo from "@/assets/logo/logo";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 import {
   Clock,
   FacebookIcon,
@@ -9,10 +12,25 @@ import {
   PhoneCall,
 } from "lucide-react";
 import Link from "next/link";
+import { useRef } from "react";
 
 const Footer = () => {
+  const footerRef = useRef(null);
+
+  useGSAP(
+    () => {
+      gsap.from(footerRef.current, {
+        opacity: 0,
+        y: 50,
+        duration: 1,
+        ease: "power3.out",
+      });
+    },
+    { scope: footerRef }
+  );
+
   return (
-    <div className="relative bg-[#1C1C1C] text-gray-300">
+    <div ref={footerRef} className="relative bg-[#1C1C1C] text-gray-300">
       {/* Curve Top */}
       <div className="sm:block hidden  absolute -top-6 left-1/2 -translate-x-1/2 w-[450px] h-[50%] bg-[#1C1C1C] rounded-t-full"></div>
 
@@ -22,12 +40,10 @@ const Footer = () => {
           <div className="text-center">
             <div className="flex items-center justify-center">
               <Logo />
-              <h2
-                className="text-2xl font-semibold font-primary
-              "
-              >
-                EventSphere
-              </h2>
+              <h2 className="text-2xl font-semibold font-primary">
+  EventSphere
+</h2>
+
             </div>
             <p className="text-sm mt-1 text-gray-400">Making Events Simpler</p>
           </div>
@@ -61,14 +77,14 @@ const Footer = () => {
                 <span>
                   <MapPinIcon size={20}/>
                 </span>{" "}
-                38-2 Dhaka, Bangladesh
+                West Talpukurpar, Cumilla, Bangladesh
               </li>
               <li className="flex gap-2">
-                <PhoneCall size={20}/> +8801729283578
+                <PhoneCall size={20}/> +01836129437
               </li>
               <li className="flex gap-2">
                 <Mail size={20}/>
-                info@dvents.org
+                raihanshamil33@gmail.com
               </li>
               <li className="flex gap-2">
                 <Clock size={20}/> Mon - Fri 9.00 am - 6.00 pm
@@ -86,17 +102,22 @@ const Footer = () => {
             <div className="grid grid-cols-2 gap-4 text-sm text-gray-400">
               <ul className="space-y-2">
                 <li>
-                  <Link href="/events"> Our Events</Link>
+                  <Link href="/events" className="hover:text-primary transition-colors"> Our Events</Link>
                 </li>
                 <li>
-                  <Link href="/about"> About Us</Link>
+                  <Link href="/about" className="hover:text-primary transition-colors"> About Us</Link>
                 </li>
                 <li>
-                  <Link href="/become-host"> Become a Host</Link>
+                  <Link href="/become-host" className="hover:text-primary transition-colors"> Become a Host</Link>
                 </li>
-
                 <li>
-                  <Link href="/contact"> Get In Touch</Link>
+                  <Link href="/contact" className="hover:text-primary transition-colors"> Get In Touch</Link>
+                </li>
+                  <li>
+                  <Link href="/blog" className="hover:text-primary transition-colors"> Blog</Link>
+                </li>
+                  <li>
+                  <Link href="/faq" className="hover:text-primary transition-colors"> FAQ</Link>
                 </li>
               </ul>
              
@@ -114,26 +135,26 @@ const Footer = () => {
             <div className="grid grid-cols-2 gap-4 text-sm text-gray-400">
            
               <ul className="space-y-2">
-                <li> Our Team</li>
-                <li> Clients List</li>
-                <li> Brochure</li>
+                <li><Link href="/team" className="hover:text-primary transition-colors">Our Team</Link></li>
+                <li><Link href="/clients" className="hover:text-primary transition-colors">Clients List</Link></li>
+                <li><Link href="/brochure" className="hover:text-primary transition-colors">Brochure</Link></li>
               </ul>
               
             </div>
             </div>
             <div className="flex gap-4 mt-4">
-              <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center cursor-pointer">
-                <FacebookIcon />
-              </div>
-              <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center cursor-pointer">
-                <Mail />
-              </div>
-              <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center cursor-pointer">
-                <InstagramIcon />
-              </div>
-              <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center cursor-pointer">
-                <LinkedinIcon />
-              </div>
+              <Link href="https://facebook.com" target="_blank" className="w-8 h-8 rounded-full bg-gray-700 hover:bg-primary transition-colors flex items-center justify-center cursor-pointer">
+                <FacebookIcon size={18} />
+              </Link>
+              <Link href="mailto:info@dvents.org" className="w-8 h-8 rounded-full bg-gray-700 hover:bg-primary transition-colors flex items-center justify-center cursor-pointer">
+                <Mail size={18} />
+              </Link>
+              <Link href="https://instagram.com" target="_blank" className="w-8 h-8 rounded-full bg-gray-700 hover:bg-primary transition-colors flex items-center justify-center cursor-pointer">
+                <InstagramIcon size={18} />
+              </Link>
+              <Link href="https://linkedin.com" target="_blank" className="w-8 h-8 rounded-full bg-gray-700 hover:bg-primary transition-colors flex items-center justify-center cursor-pointer">
+                <LinkedinIcon size={18} />
+              </Link>
             </div>
           </div>
         </div>
@@ -143,8 +164,8 @@ const Footer = () => {
           {new Date().getFullYear()} ©
           <span className="text-white font-semibold"> EventSphere</span> — The
           Events Specialists. All Rights Reserved.
-          <span className="ml-4">Terms of Use</span> |
-          <span className="ml-2">Privacy Policy</span>
+          <Link href="/terms" className="ml-4 hover:text-primary transition-colors">Terms of Use</Link> |
+          <Link href="/privacy" className="ml-2 hover:text-primary transition-colors">Privacy Policy</Link>
         </div>
       </footer>
     </div>

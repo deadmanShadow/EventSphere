@@ -1,22 +1,25 @@
 "use client";
+import { TableSkeleton } from "@/components/shared/TableSkeleton";
 import { Button } from "@/components/ui/button";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { getAllUsers, updateUsers } from "@/services/admin/userManagement";
-import { getAllEvents } from "@/services/admin/eventManagement";
-import { UserInfo } from "@/types/user.interface";
-import { IEvent } from "@/types/event.interface";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { UserRole } from "@/lib/auth-utils";
+import { getAllEvents } from "@/services/admin/eventManagement";
+import { getAllUsers, updateUsers } from "@/services/admin/userManagement";
+import { IEvent } from "@/types/event.interface";
+import { UserInfo } from "@/types/user.interface";
 import { Trash2Icon } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const HostManagement = () => {
   const [allUsers, setAllUsers] = useState<UserInfo[]>([]);
   const [allEvents, setAllEvents] = useState<IEvent[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setIsLoading(true);
         const [userResult, eventResult] = await Promise.all([
           getAllUsers(),
           getAllEvents()
@@ -25,6 +28,8 @@ const HostManagement = () => {
         setAllEvents(eventResult?.data || []);
       } catch (error) {
         console.error('Error fetching data:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchData();
@@ -60,6 +65,10 @@ const HostManagement = () => {
   };
 
  
+
+  if (isLoading) {
+    return <TableSkeleton columns={5} rows={5} />;
+  }
 
   return (
     <div className="space-y-4 rounded-md border max-w-3xl">

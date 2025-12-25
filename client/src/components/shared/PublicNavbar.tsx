@@ -1,3 +1,4 @@
+
 import { getUserInfo } from "@/services/auth/getUserInfo";
 import { getCookie } from "@/services/auth/tokenHandlers";
 import { Menu } from "lucide-react";
@@ -6,6 +7,7 @@ import Logo from "../../assets/logo/logo";
 import UserDropdown from "../modules/Dashboard/UserDropdown";
 import { Button } from "../ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "../ui/sheet";
+import AnimatedSection from "./AnimatedSection";
 import LogoutButton from "./LogoutButton";
 
 
@@ -23,7 +25,8 @@ const PublicNavbar = async () => {
   const isHost = userInfo?.role === "HOST";
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur  dark:bg-background/95">
+    <AnimatedSection direction="down" className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur  dark:bg-background/95">
+    <header className="w-full">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link href="/" className="flex items-center">
           <Logo />
@@ -140,6 +143,7 @@ const PublicNavbar = async () => {
         </div>
       </div>
     </header>
+    </AnimatedSection>
   );
 };
 

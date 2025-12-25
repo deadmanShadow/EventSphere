@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
+import httpStatus from "http-status-codes";
+import { stripe } from "../../../config/stripe";
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { PaymentService } from "./payment.service";
-import httpStatus from "http-status-codes";
-import { stripe } from "../../../config/stripe";
 
 declare global {
   namespace Express {
@@ -15,7 +15,8 @@ declare global {
 
 const createPaymentSession = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const result = await PaymentService.createPaymentSession(id, req.user.id);
+  const { couponCode } = req.body;
+  const result = await PaymentService.createPaymentSession(id, req.user.id, couponCode);
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
     success: true,

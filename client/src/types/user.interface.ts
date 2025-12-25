@@ -10,4 +10,5 @@ export interface UserInfo {
   location?: string;
   interests?: string[];
   bio?: string;
+  status?: "ACTIVE" | "BLOCKED";
 }

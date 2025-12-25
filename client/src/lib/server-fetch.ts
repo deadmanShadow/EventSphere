@@ -10,7 +10,10 @@ const serverFetchHelper = async(endpoint: string, options: RequestInit): Promise
         console.log("No access token found");
     }
 
-    const response = await fetch(`${BACKEND_API_URL}${endpoint}`,{
+    const fullUrl = `${BACKEND_API_URL}${endpoint}`;
+    console.log("Fetching:", fullUrl, options);
+
+    const response = await fetch(fullUrl,{
          headers:{
             ...headers,
             ...(accessToken && { Authorization: `Bearer ${accessToken}` }),

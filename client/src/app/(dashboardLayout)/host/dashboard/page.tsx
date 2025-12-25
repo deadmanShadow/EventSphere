@@ -1,7 +1,10 @@
+import DashboardBarChart from "@/components/modules/Dashboard/Charts/DashboardBarChart";
+import { HostEventsTable } from "@/components/modules/Dashboard/TableWrappers/HostTables";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getHostedEvents } from "@/services/host/hostedEventManagement";
 import { IEvent } from "@/types/event.interface";
 import { CalendarIcon, DollarSignIcon, TrendingUpIcon, UsersIcon } from "lucide-react";
+
 
 const HostDashboardPage = async () => {
   const result = await getHostedEvents();
@@ -19,6 +22,24 @@ const HostDashboardPage = async () => {
     (sum, e) => sum + (e._count?.participants || 0) * parseFloat(e.joiningFee),
     0
   );
+
+  // Group events by month for Bar Chart
+  const monthlyStats = events.reduce((acc: any[], event) => {
+    const month = new Date(event.dateTime).toLocaleString('default', { month: 'short' });
+    const revenue = parseFloat(event.joiningFee) * (event._count?.participants || 0);
+    const participants = event._count?.participants || 0;
+    
+    const existing = acc.find(item => item.name === month);
+    if (existing) {
+      existing.revenue += revenue;
+      existing.participants += participants;
+    } else {
+      acc.push({ name: month, revenue, participants });
+    }
+    return acc;
+  }, []);
+
+
 
   return (
     <div className="space-y-6">
@@ -66,60 +87,32 @@ const HostDashboardPage = async () => {
         </Card>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>Upcoming Events</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {upcomingEvents.length === 0 ? (
-              <p className="text-muted-foreground">No upcoming events</p>
-            ) : (
-              <div className="space-y-3">
-                {upcomingEvents.slice(0, 5).map((event) => (
-                  <div key={event.id} className="flex justify-between items-center">
-                    <div>
-                      <p className="font-medium">{event.name}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {new Date(event.dateTime).toLocaleDateString()}
-                      </p>
-                    </div>
-                    <div className="text-sm">
-                      {event._count?.participants || 0} participants
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <DashboardBarChart 
+            data={monthlyStats} 
+            xKey="name" 
+            yKey="revenue" 
+            title="Revenue Overview"
+            color="#10b981"
+        />
+         <DashboardBarChart 
+            data={monthlyStats} 
+            xKey="name" 
+            yKey="participants" 
+            title="Participant Trends"
+            color="#3b82f6"
+        />
+      </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Past Events</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {pastEvents.length === 0 ? (
-              <p className="text-muted-foreground">No past events</p>
-            ) : (
-              <div className="space-y-3">
-                {pastEvents.slice(0, 5).map((event) => (
-                  <div key={event.id} className="flex justify-between items-center">
-                    <div>
-                      <p className="font-medium">{event.name}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {new Date(event.dateTime).toLocaleDateString()}
-                      </p>
-                    </div>
-                    <div className="text-sm">
-                      ${((event._count?.participants || 0) * parseFloat(event.joiningFee)).toFixed(2)}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
+      <div className="grid gap-4 md:grid-cols-2">
+        <HostEventsTable
+            type="upcoming"
+            data={upcomingEvents.slice(0, 5)}
+        />
+        <HostEventsTable
+            type="past"
+            data={pastEvents.slice(0, 5)}
+        />
       </div>
     </div>
   );

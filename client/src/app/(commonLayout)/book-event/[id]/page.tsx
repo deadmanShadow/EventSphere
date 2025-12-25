@@ -1,10 +1,10 @@
-import { getEventsById } from "@/services/admin/eventManagement";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { BookingPaymentSummary } from "@/components/modules/event/BookingPaymentSummary";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getEventsById } from "@/services/admin/eventManagement";
 import { Calendar, MapPin } from "lucide-react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { BookEventButton } from "@/components/modules/event/BookEventButton";
 
 export default async function BookEventPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -45,29 +45,11 @@ export default async function BookEventPage({ params }: { params: Promise<{ id: 
                     </div>
                   </div>
                 </div>
-                 <BookEventButton eventId={event.id} />
               </CardContent>
             </Card>
           </div>
-
           <div>
-            <Card className="sticky top-6">
-              <CardHeader>
-                <CardTitle>Amount Details</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span>Joining Fee</span>
-                    <span className="font-semibold">{event.joiningFee}</span>
-                  </div>
-                  <div className="border-t pt-3 flex justify-between text-lg font-bold">
-                    <span>Total</span>
-                    <span className="text-[#a11f65]">{event.joiningFee}</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <BookingPaymentSummary eventId={event.id} originalFee={event.joiningFee} currency={event.currency} />
           </div>
         </div>
       </div>

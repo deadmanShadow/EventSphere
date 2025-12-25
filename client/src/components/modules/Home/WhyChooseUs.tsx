@@ -1,5 +1,5 @@
 
-import { Users, Shield, Target, Zap } from 'lucide-react';
+import { Shield, ShieldCheck, Target, Users, Zap } from 'lucide-react';
 import Link from 'next/link';
 
 const WhyChooseUs = () => {
@@ -23,7 +23,12 @@ const WhyChooseUs = () => {
       icon: <Users />,
       title: "Real Connections",
       description: "Focus on building genuine, lasting friendships"
-    }
+    },
+    {
+    icon: <ShieldCheck />,
+    title: "Privacy First",
+    description: "Your data is protected with industry-standard security",
+  },
   ];
 
   return (
@@ -38,7 +43,11 @@ const WhyChooseUs = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl">
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 
+                gap-x-8 gap-y-10 
+                max-w-7xl mx-auto place-items-stretch">
+
+
           {features.map((feature, index) => (
             <div 
               key={index}

@@ -1,40 +1,58 @@
 "use client";
 
-import LogoutButton from "@/components/shared/LogoutButton";
 import { Button } from "@/components/ui/button";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { logoutUser } from "@/services/auth/logout";
 import { UserInfo } from "@/types/user.interface";
-import { LayoutDashboardIcon, Settings, User } from "lucide-react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { LayoutDashboardIcon, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRef } from "react";
 
 interface UserDropdownProps {
   userInfo: UserInfo;
 }
 
 const UserDropdown = ({ userInfo }: UserDropdownProps) => {
-  // const handleLogout = async () => {
-  //   await logoutUser();
-  // };
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      if (containerRef.current) {
+        gsap.from(containerRef.current, {
+          y: -10,
+          opacity: 0,
+          scale: 0.95,
+          duration: 0.3,
+          ease: "power2.out",
+        });
+      }
+    },
+    { scope: containerRef }
+  );
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon" className="rounded-full p-0 overflow-hidden">
+        <Button
+          variant="outline"
+          size="icon"
+          className="rounded-full p-0 border-2 border-primary/20 hover:border-primary/50 transition-colors overflow-hidden"
+        >
           {userInfo.image ? (
-            <Image 
-              src={userInfo.image} 
-              alt={userInfo.name} 
-              width={40} 
-              height={40} 
+            <Image
+              src={userInfo.image}
+              alt={userInfo.name}
+              width={40}
+              height={40}
               className="rounded-full"
             />
           ) : (
@@ -44,8 +62,9 @@ const UserDropdown = ({ userInfo }: UserDropdownProps) => {
           )}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel className="flex gap-6">
+      <DropdownMenuContent align="end" className="w-64 p-2 overflow-hidden">
+        <div ref={containerRef}>
+          <DropdownMenuLabel className="flex items-center gap-3 p-2">
           <div>
             {userInfo.image ? (
               <Image src={userInfo.image} alt={userInfo.name} width={40} height={40} className="rounded-full border"/>
@@ -73,14 +92,7 @@ const UserDropdown = ({ userInfo }: UserDropdownProps) => {
             Profile
           </Link>
         </DropdownMenuItem>
-        
-        
-        {/* <DropdownMenuItem
-          onClick={handleLogout}
-          className="cursor-pointer text-red-600"
-        >
-          <LogoutButton />
-        </DropdownMenuItem> */}
+        </div>
       </DropdownMenuContent>
     </DropdownMenu>
   );

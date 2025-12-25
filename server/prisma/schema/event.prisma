@@ -8,6 +8,7 @@ model Event {
   minParticipants Int                @default(1)
   maxParticipants Int?
   joiningFee      Float              @default(0.0)
+  currency        String             @default("USD") // "USD" or "BDT"
   status          EventStatus        @default(OPEN)
   createdBy       String
   createdAt       DateTime           @default(now())
@@ -59,8 +60,11 @@ model Payment {
   paymentGatewayData Json?
   eventId            String
   userId             String
+  couponId           String?
+  discountAmount     Float         @default(0.0)
   createdAt          DateTime      @default(now())
   updatedAt          DateTime      @updatedAt
+  coupon             Coupon?       @relation(fields: [couponId], references: [id])
   event              Event         @relation(fields: [eventId], references: [id], onDelete: Cascade)
   user               User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 

@@ -1,0 +1,21 @@
+model Coupon {
+  id             String       @id @default(uuid())
+  code           String       @unique
+  discountType   DiscountType
+  discountValue  Float
+  validFrom      DateTime
+  validUntil     DateTime
+  usageLimit     Int? // Max times this coupon can be used total
+  usedCount      Int          @default(0)
+  isActive       Boolean      @default(true)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  payments       Payment[] // Relation to track which payments used this coupon
+
+  @@map("coupons")
+}
+
+enum DiscountType {
+  FIXED
+  PERCENTAGE
+}

@@ -1,11 +1,13 @@
-import Stripe from "stripe";
-import { prisma } from "../../shared/prisma";
 import { PaymentStatus } from "@prisma/client";
+import httpStatus from "http-status-codes";
+import Stripe from "stripe";
 import { stripe } from "../../../config/stripe";
 import AppError from "../../errorHelpers/AppError";
-import httpStatus from "http-status-codes";
+import { prisma } from "../../shared/prisma";
 
-const createPaymentSession = async (eventId: string, userId: string) => {
+import { CouponService } from "../coupon/coupon.service";
+
+const createPaymentSession = async (eventId: string, userId: string, couponCode?: string) => {
   const event = await prisma.event.findUnique({ where: { id: eventId } });
   if (!event) throw new AppError(httpStatus.NOT_FOUND, "Event not found");
   if (event.joiningFee === 0) throw new AppError(httpStatus.BAD_REQUEST, "This is a free event");
@@ -15,27 +17,45 @@ const createPaymentSession = async (eventId: string, userId: string) => {
   });
   if (existingPayment) throw new AppError(httpStatus.BAD_REQUEST, "Already paid for this event");
 
+  let unitAmount = Math.round(event.joiningFee * 100);
+  let couponId = null;
+  let discountAmount = 0;
+
+  if (couponCode) {
+    const couponResult = await CouponService.validateCoupon(couponCode, event.joiningFee);
+    unitAmount = Math.round(couponResult.finalAmount * 100);
+    couponId = couponResult.coupon.id;
+    discountAmount = couponResult.discountAmount;
+  }
+
+  // Ensure minimum amount for Stripe (e.g. 50 cents) if not zero? 
+  // For now assuming > 0.
+  
+  const currency = event.currency ? event.currency.toLowerCase() : "usd";
+
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
     line_items: [{
       price_data: {
-        currency: "usd",
+        currency: currency,
         product_data: { name: event.name },
-        unit_amount: Math.round(event.joiningFee * 100),
+        unit_amount: unitAmount,
       },
       quantity: 1,
     }],
     mode: "payment",
     success_url: `${process.env.FRONTEND_URL}/events/${eventId}?payment=success&session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${process.env.FRONTEND_URL}/events/${eventId}?payment=cancelled`,
-    metadata: { eventId, userId },
+    metadata: { eventId, userId, couponId },
   });
 
   await prisma.payment.create({
     data: {
-      amount: event.joiningFee,
+      amount: event.joiningFee, // Original amount
+      discountAmount, // Saved discount
       eventId,
       userId,
+      couponId,
       stripeSessionId: session.id,
     },
   });
@@ -78,7 +98,7 @@ const handleStripeWebhookEvent = async (event: Stripe.Event) => {
 const getUserPayments = async (userId: string) => {
   return await prisma.payment.findMany({
     where: { userId },
-    include: { event: { select: { id: true, name: true, dateTime: true } } },
+    include: { event: { select: { id: true, name: true, dateTime: true, currency: true } } },
     orderBy: { createdAt: "desc" },
   });
 };
