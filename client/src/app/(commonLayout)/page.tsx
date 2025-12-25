@@ -2,6 +2,7 @@ import CTA from "@/components/modules/Home/CTA";
 import EventCategories from "@/components/modules/Home/EventCategories";
 import FAQ from "@/components/modules/Home/FAQ";
 import Hero from "@/components/modules/Home/Hero";
+import { EventCardsSkeleton, HostCardsSkeleton } from "@/components/modules/Home/HomeSkeletons";
 import HowItWorks from "@/components/modules/Home/HowItWorks";
 import PopularEvents from "@/components/modules/Home/PopularEvents";
 import Testimonials from "@/components/modules/Home/Testimonials";
@@ -9,6 +10,7 @@ import TopRatedHosts from "@/components/modules/Home/TopRatedHosts";
 import WhyChooseUs from "@/components/modules/Home/WhyChooseUs";
 import AnimatedSection from "@/components/shared/AnimatedSection";
 import Head from "next/head";
+import { Suspense } from "react";
 
 export const dynamic = "force-dynamic";
 
@@ -29,7 +31,9 @@ const HomePage = () => {
           <Hero />
         </AnimatedSection>
         <AnimatedSection direction="left" delay={0.2}>
-          <PopularEvents />
+          <Suspense fallback={<EventCardsSkeleton />}>
+            <PopularEvents />
+          </Suspense>
         </AnimatedSection>
         <AnimatedSection direction="right" delay={0.2}>
           <EventCategories />
@@ -38,7 +42,9 @@ const HomePage = () => {
           <HowItWorks />
         </AnimatedSection>
         <AnimatedSection direction="left" delay={0.2}>
-          <TopRatedHosts />
+          <Suspense fallback={<HostCardsSkeleton />}>
+            <TopRatedHosts />
+          </Suspense>
         </AnimatedSection>
         <AnimatedSection direction="right" delay={0.2}>
           <Testimonials />

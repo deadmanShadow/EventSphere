@@ -4,22 +4,30 @@
 import { Button } from "@/components/ui/button";
 import { getAllTypes } from "@/services/admin/eventTypeManagement";
 import { EventType } from "@/types/event.interface";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import bg from "../../../assets/home/img-1.jpg";
+
+import { CategoryCardsSkeleton } from "./HomeSkeletons";
 
 const EventCategories = () => {
   const [categories, setCategories] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const result = await getAllTypes();
-      const categoriesData = result?.data?.map((category: EventType) => ({
-        name: category.name,
-        count: category.events?.length || 0,
-      })) || [];
-      setCategories(categoriesData);
+      setIsLoading(true);
+      try {
+        const result = await getAllTypes();
+        const categoriesData = result?.data?.map((category: EventType) => ({
+          name: category.name,
+          count: category.events?.length || 0,
+        })) || [];
+        setCategories(categoriesData);
+      } finally {
+        setIsLoading(false);
+      }
     };
     fetchCategories();
   }, []);
@@ -44,21 +52,25 @@ const EventCategories = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-          {categories.slice(0,6).map((category: any) => (
-            <Button
-              key={category.name}
-              variant="outline"
-              onClick={() => handleCategoryClick(category.name)}
-              className="h-auto p-6 flex flex-col items-center space-y-3 hover:shadow-lg transition-all duration-300 bg-primary/5 backdrop-blur-sm border border-gray-400 hover:border-gray/600 hover:bg-white/20 cursor-pointer"
-            >
-              <div className="text-center">
-                <h3 className="font-semibold text-lg text-gray-100">{category.name}</h3>
-                <p className="text-sm text-white">{category.count} events</p>
-              </div>
-            </Button>
-          ))}
-        </div>
+        {isLoading ? (
+          <CategoryCardsSkeleton />
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+            {categories.slice(0, 6).map((category: any) => (
+              <Button
+                key={category.name}
+                variant="outline"
+                onClick={() => handleCategoryClick(category.name)}
+                className="h-auto p-6 flex flex-col items-center space-y-3 hover:shadow-lg transition-all duration-300 bg-primary/5 backdrop-blur-sm border border-gray-400 hover:border-gray/600 hover:bg-white/20 cursor-pointer"
+              >
+                <div className="text-center">
+                  <h3 className="font-semibold text-lg text-gray-100">{category.name}</h3>
+                  <p className="text-sm text-white">{category.count} events</p>
+                </div>
+              </Button>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
