@@ -12,15 +12,39 @@ import { UserInfo } from "@/types/user.interface";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { motion } from "framer-motion";
+
 interface DashboardMobileSidebarContentProps {
   userInfo: UserInfo;
   navItems: NavSection[];
   dashboardHome: string;
+  isOpen?: boolean;
 }
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.05,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, x: -10 },
+  show: {
+    opacity: 1,
+    x: 0,
+    transition: { type: "spring", stiffness: 300, damping: 24 } as const,
+  },
+};
 
 const DashboardMobileSidebar = ({
   userInfo,
   navItems,
+  isOpen,
 }: DashboardMobileSidebarContentProps) => {
   const pathname = usePathname();
   return (
@@ -38,9 +62,14 @@ const DashboardMobileSidebar = ({
 
       {/* Navigation */}
       <ScrollArea className="flex-1 px-3 py-4">
-        <nav className="space-y-1">
+        <motion.nav
+          variants={containerVariants}
+          initial="hidden"
+          animate={isOpen ? "show" : "hidden"}
+          className="space-y-1"
+        >
           {navItems.map((section, sectionIdx) => (
-            <div key={sectionIdx}>
+            <motion.div key={sectionIdx} variants={itemVariants}>
               {section.title && (
                 <h4 className="mb-2 px-3 text-xs font-semibold text-muted-foreground uppercase">
                   {section.title}
@@ -76,13 +105,18 @@ const DashboardMobileSidebar = ({
               {sectionIdx < navItems.length - 1 && (
                 <Separator className="my-4" />
               )}
-            </div>
+            </motion.div>
           ))}
-        </nav>
+        </motion.nav>
       </ScrollArea>
 
       {/* User Info at Bottom */}
-      <div className="border-t p-4">
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={isOpen ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+        transition={{ delay: 0.3 }}
+        className="border-t p-4"
+      >
         <div className="flex items-center gap-3">
           <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
             <span className="text-sm font-semibold text-primary">
@@ -96,7 +130,7 @@ const DashboardMobileSidebar = ({
             </p>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

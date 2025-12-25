@@ -1,14 +1,13 @@
 
 import { getUserInfo } from "@/services/auth/getUserInfo";
 import { getCookie } from "@/services/auth/tokenHandlers";
-import { Menu } from "lucide-react";
 import Link from "next/link";
 import Logo from "../../assets/logo/logo";
 import UserDropdown from "../modules/Dashboard/UserDropdown";
 import { Button } from "../ui/button";
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "../ui/sheet";
 import AnimatedSection from "./AnimatedSection";
 import LogoutButton from "./LogoutButton";
+import MobileMenu from "./MobileMenu";
 
 
 const PublicNavbar = async () => {
@@ -82,65 +81,12 @@ const PublicNavbar = async () => {
           )}
         </div>
 
-        {/* Mobile Menu */}
-
-        <div className="md:hidden">
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="outline">
-                {" "}
-                <Menu />{" "}
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] sm:w-[400px] p-4">
-              <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
-              <nav className="flex flex-col space-y-2 mt-8">
-                {navItems.map((link) => (
-                  <Link
-                    key={link.label}
-                    href={link.href}
-                    className=" font-medium uppercase"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-                {isUser && (
-                  <Link
-                    href={"/dashboard/my-events"}
-                    className="text-black uppercase font-semibold hover:text-primary transition-colors"
-                  >
-                    My Events
-                  </Link>
-                )}
-                {isHost && (
-                  <Link
-                    href={"/host/dashboard/hosted-events"}
-                    className="text-black uppercase font-semibold hover:text-primary transition-colors"
-                  >
-                    My Events
-                  </Link>
-                )}
-                <div className="border-t pt-4 flex flex-col space-y-4">
-                  {userInfo ? (
-                    <div className="flex flex-col gap-2">
-                      <UserDropdown userInfo={userInfo} />
-                      <LogoutButton />
-                    </div>
-                  ) : (
-                    <>
-                      <Link href="/login" className="text-lg font-medium">
-                        <Button>Login</Button>
-                      </Link>
-                      <Link href="/register" className="text-lg font-medium">
-                        <Button>Register</Button>
-                      </Link>
-                    </>
-                  )}
-                </div>
-              </nav>
-            </SheetContent>
-          </Sheet>
-        </div>
+        <MobileMenu
+          navItems={navItems}
+          userInfo={userInfo}
+          isUser={isUser}
+          isHost={isHost}
+        />
       </div>
     </header>
     </AnimatedSection>

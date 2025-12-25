@@ -1,14 +1,15 @@
 "use client";
 
+import LogoutButton from "@/components/shared/LogoutButton";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { NavSection } from "@/types/dashboard.interface";
 import { UserInfo } from "@/types/user.interface";
-import { Menu } from "lucide-react";
 import { useEffect, useState } from "react";
-import UserDropdown from "./UserDropdown";
 import DashboardMobileSidebar from "./DashboardMobileSidebar";
-import LogoutButton from "@/components/shared/LogoutButton";
+import UserDropdown from "./UserDropdown";
+
+import AnimatedHamburger from "@/components/shared/AnimatedHamburger";
 
 interface DashboardNavbarContentProps {
   userInfo: UserInfo;
@@ -42,7 +43,7 @@ const DashboardNavbarContent = ({
         <Sheet open={isMobile && isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild className="md:hidden">
             <Button variant="outline" size="icon">
-              <Menu className="h-5 w-5" />
+              <AnimatedHamburger isOpen={isOpen} />
             </Button>
           </SheetTrigger>
           {/* Hide the overlay on medium and larger screens */}
@@ -51,6 +52,7 @@ const DashboardNavbarContent = ({
               userInfo={userInfo}
               navItems={navItems || []}
               dashboardHome={dashboardHome || ""}
+              isOpen={isOpen}
             />
           </SheetContent>
         </Sheet>
