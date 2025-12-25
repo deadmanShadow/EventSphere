@@ -22,20 +22,20 @@ const ContactInfo = () => {
     {
       icon: <Mail className="w-6 h-6" />,
       title: "Email",
-      content: "hello@EventSphere.com",
+      content: "raihanshamil33@gmail.com",
       description: "We'll respond within 24 hours",
     },
     {
       icon: <Phone className="w-6 h-6" />,
       title: "Phone",
-      content: "+880182382191",
-      description: "Mon-Fri, 9AM-6PM EST",
+      content: "+8801836129437",
+      description: "Mon-Thu, 10AM-5PM BST",
     },
     {
       icon: <MapPin className="w-6 h-6" />,
       title: "Office",
-      content: "123 Event Street",
-      description: "Dhaka, Bangladesh",
+      content: "West Talpukurpar",
+      description: "Cumilla, Bangladesh",
     },
     {
       icon: <Clock className="w-6 h-6" />,

@@ -32,7 +32,7 @@ const Footer = () => {
   return (
     <div ref={footerRef} className="relative bg-[#1C1C1C] text-gray-300">
       {/* Curve Top */}
-      <div className="sm:block hidden  absolute -top-6 left-1/2 -translate-x-1/2 w-[450px] h-[50%] bg-[#1C1C1C] rounded-t-full"></div>
+      <div className="sm:block hidden absolute -top-6 left-1/2 -translate-x-1/2 w-[450px] h-[50%] bg-[#1C1C1C] rounded-t-full"></div>
 
       <footer className="relative z-10 pt-14 pb-10 px-6 md:px-12 lg:px-14 font-secondary">
         {/* Logo Section */}
@@ -41,18 +41,17 @@ const Footer = () => {
             <div className="flex items-center justify-center">
               <Logo />
               <h2 className="text-2xl font-semibold font-primary">
-  EventSphere
-</h2>
-
+                EventSphere
+              </h2>
             </div>
             <p className="text-sm mt-1 text-gray-400">Making Events Simpler</p>
           </div>
         </div>
 
         {/* Main Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12  justify-items-center mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 justify-items-start md:justify-items-start mx-auto">
           {/* About Section */}
-          <div>
+          <div className="w-full text-left md:text-left">
             <h3 className="text-lg font-semibold mb-1 border-primary">
               About EventSphere
             </h3>
@@ -64,98 +63,158 @@ const Footer = () => {
               ease. From meetups to large conferences, we bring organizers and
               attendees together through a simple and reliable platform.
             </p>
-            
           </div>
 
           {/* Keep In Touch */}
-          <div className="md:pl-4">
+          <div className="w-full text-left md:text-left md:pl-4">
             <h3 className="text-lg font-semibold mb-1">Keep In Touch</h3>
             <div className="border-t w-10 mb-4 pl-2 border-2 border-primary"></div>
 
             <ul className="space-y-3 text-sm text-gray-400">
               <li className="flex gap-2">
-                <span>
-                  <MapPinIcon size={20}/>
-                </span>{" "}
-                West Talpukurpar, Cumilla, Bangladesh
+                <MapPinIcon size={20} /> West Talpukurpar, Cumilla, Bangladesh
               </li>
               <li className="flex gap-2">
-                <PhoneCall size={20}/> +01836129437
+                <PhoneCall size={20} /> +8801836129437
               </li>
               <li className="flex gap-2">
-                <Mail size={20}/>
-                raihanshamil33@gmail.com
+                <Mail size={20} /> raihanshamil33@gmail.com
               </li>
               <li className="flex gap-2">
-                <Clock size={20}/> Mon - Fri 9.00 am - 6.00 pm
+                <Clock size={20} /> Mon - Thu 10.00 am - 5.00 pm
               </li>
             </ul>
           </div>
 
           {/* Quick Links */}
-          <div className="pl-8 md:pl-16">
+          <div className="w-full text-left md:text-left pl-0 md:pl-16">
             <h3 className="text-lg font-semibold mb-1 border-primary">
               Quick Links
             </h3>
             <div className="border-t w-10 mb-4 pl-2 border-2 border-primary"></div>
 
             <div className="grid grid-cols-2 gap-4 text-sm text-gray-400">
-              <ul className="space-y-2">
+              <ul className="space-y-2 text-left md:text-left">
                 <li>
-                  <Link href="/events" className="hover:text-primary transition-colors"> Our Events</Link>
+                  <Link
+                    href="/events"
+                    className="hover:text-primary transition-colors"
+                  >
+                    Our Events
+                  </Link>
                 </li>
                 <li>
-                  <Link href="/about" className="hover:text-primary transition-colors"> About Us</Link>
+                  <Link
+                    href="/about"
+                    className="hover:text-primary transition-colors"
+                  >
+                    About Us
+                  </Link>
                 </li>
                 <li>
-                  <Link href="/become-host" className="hover:text-primary transition-colors"> Become a Host</Link>
+                  <Link
+                    href="/become-host"
+                    className="hover:text-primary transition-colors"
+                  >
+                    Become a Host
+                  </Link>
                 </li>
                 <li>
-                  <Link href="/contact" className="hover:text-primary transition-colors"> Get In Touch</Link>
+                  <Link
+                    href="/contact"
+                    className="hover:text-primary transition-colors"
+                  >
+                    Get In Touch
+                  </Link>
                 </li>
-                  <li>
-                  <Link href="/blog" className="hover:text-primary transition-colors"> Blog</Link>
+                <li>
+                  <Link
+                    href="/blog"
+                    className="hover:text-primary transition-colors"
+                  >
+                    Blog
+                  </Link>
                 </li>
-                  <li>
-                  <Link href="/faq" className="hover:text-primary transition-colors"> FAQ</Link>
+                <li>
+                  <Link
+                    href="/faq"
+                    className="hover:text-primary transition-colors"
+                  >
+                    FAQ
+                  </Link>
                 </li>
               </ul>
-             
             </div>
           </div>
 
-           {/*  */}
-          <div className="pr-1">
-            <div className="pr-1">
-              <h3 className="text-lg font-semibold mb-1 border-primary">
+          {/* Discover Section */}
+          <div className="w-full text-left md:text-left">
+            <h3 className="text-lg font-semibold mb-1 border-primary">
               Discover
             </h3>
             <div className="border-t w-10 mb-4 pl-2 border-2 border-primary"></div>
 
             <div className="grid grid-cols-2 gap-4 text-sm text-gray-400">
-           
-              <ul className="space-y-2">
-                <li><Link href="/team" className="hover:text-primary transition-colors">Our Team</Link></li>
-                <li><Link href="/clients" className="hover:text-primary transition-colors">Clients List</Link></li>
-                <li><Link href="/brochure" className="hover:text-primary transition-colors">Brochure</Link></li>
+              <ul className="space-y-2 text-left md:text-left">
+                <li>
+                  <Link
+                    href="/team"
+                    className="hover:text-primary transition-colors"
+                  >
+                    Our Team
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/clients"
+                    className="hover:text-primary transition-colors"
+                  >
+                    Clients List
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/brochure"
+                    className="hover:text-primary transition-colors"
+                  >
+                    Brochure
+                  </Link>
+                </li>
               </ul>
-              
             </div>
-            </div>
-            <div className="flex gap-4 mt-4">
-              <Link href="https://facebook.com" target="_blank" className="w-8 h-8 rounded-full bg-gray-700 hover:bg-primary transition-colors flex items-center justify-center cursor-pointer">
-                <FacebookIcon size={18} />
-              </Link>
-              <Link href="mailto:info@dvents.org" className="w-8 h-8 rounded-full bg-gray-700 hover:bg-primary transition-colors flex items-center justify-center cursor-pointer">
-                <Mail size={18} />
-              </Link>
-              <Link href="https://instagram.com" target="_blank" className="w-8 h-8 rounded-full bg-gray-700 hover:bg-primary transition-colors flex items-center justify-center cursor-pointer">
-                <InstagramIcon size={18} />
-              </Link>
-              <Link href="https://linkedin.com" target="_blank" className="w-8 h-8 rounded-full bg-gray-700 hover:bg-primary transition-colors flex items-center justify-center cursor-pointer">
-                <LinkedinIcon size={18} />
-              </Link>
-            </div>
+
+            {/* Social Icons */}
+          {/* Social Icons */}
+<div className="flex gap-4 mt-4 justify-center md:justify-start">
+  <Link
+    href="https://facebook.com"
+    target="_blank"
+    className="w-8 h-8 rounded-full bg-gray-700 hover:bg-primary transition-colors flex items-center justify-center cursor-pointer"
+  >
+    <FacebookIcon size={18} />
+  </Link>
+  <Link
+    href="mailto:raihanshamil33@gmai1.com"
+    className="w-8 h-8 rounded-full bg-gray-700 hover:bg-primary transition-colors flex items-center justify-center cursor-pointer"
+  >
+    <Mail size={18} />
+  </Link>
+  <Link
+    href="https://instagram.com"
+    target="_blank"
+    className="w-8 h-8 rounded-full bg-gray-700 hover:bg-primary transition-colors flex items-center justify-center cursor-pointer"
+  >
+    <InstagramIcon size={18} />
+  </Link>
+  <Link
+    href="https://linkedin.com/in/deadmanShadow"
+    target="_blank"
+    className="w-8 h-8 rounded-full bg-gray-700 hover:bg-primary transition-colors flex items-center justify-center cursor-pointer"
+  >
+    <LinkedinIcon size={18} />
+  </Link>
+</div>
+
           </div>
         </div>
 
@@ -164,8 +223,19 @@ const Footer = () => {
           {new Date().getFullYear()} ©
           <span className="text-white font-semibold"> EventSphere</span> — The
           Events Specialists. All Rights Reserved.
-          <Link href="/terms" className="ml-4 hover:text-primary transition-colors">Terms of Use</Link> |
-          <Link href="/privacy" className="ml-2 hover:text-primary transition-colors">Privacy Policy</Link>
+          <Link
+            href="/terms"
+            className="ml-4 hover:text-primary transition-colors"
+          >
+            Terms of Use
+          </Link>{" "}
+          |
+          <Link
+            href="/privacy"
+            className="ml-2 hover:text-primary transition-colors"
+          >
+            Privacy Policy
+          </Link>
         </div>
       </footer>
     </div>
